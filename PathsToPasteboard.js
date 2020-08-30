@@ -12,11 +12,11 @@ ObjC.import('Cocoa')
 
 const pboard = $.NSPasteboard.generalPasteboard
 
-function run(argv) {
+function run(paths) {
 	console.log('.')
 	console.log('/--------- INPUT FILES ---------\\')
-	let arr = $.NSMutableArray.alloc.init
-	argv.forEach(p => {
+	let arr = $.NSMutableArray.alloc.init,
+	paths.forEach(p => {
 		let url = $.NSURL.fileURLWithPath(p)
 		arr.addObject(url.absoluteURL)
 		console.log(ObjC.unwrap(url.absoluteString))
@@ -26,7 +26,10 @@ function run(argv) {
 	pboard.writeObjects(arr)
 	return JSON.stringify({
 		alfredworkflow: {
-			variables: {PBOARD_TYPES: 'public.file-url'}
+			variables: {
+				PBOARD_TYPES: 'public.file-url',
+				CLIPBOARD: paths.join('\n')
+			}
 		}
 	})
 }

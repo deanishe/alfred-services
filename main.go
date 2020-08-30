@@ -11,62 +11,38 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
+	"sort"
 	"strings"
 
 	aw "github.com/deanishe/awgo"
+	"github.com/deanishe/awgo/update"
 	"github.com/deanishe/awgo/util"
 	"github.com/pkg/errors"
 	"howett.net/plist"
 )
 
 const (
+	// workflow's GitHub repo (for updates)
+	repo    = "deanishe/alfred-services"
+	helpURL = "https://github.com/deanishe/alfred-services/issues"
+	// property list containing list of services
 	servicesList = "${HOME}/Library/Caches/com.apple.nsservicescache.plist"
-	inputKey     = "input.json"
 )
 
 var (
-	iconError   = &aw.Icon{Value: "icons/error.png"}
-	iconWarning = &aw.Icon{Value: "icons/warning.png"}
+	iconUpdateAvailable = &aw.Icon{Value: "icons/update-available.png"}
+	iconError           = &aw.Icon{Value: "icons/error.png"}
+	iconWarning         = &aw.Icon{Value: "icons/warning.png"}
 )
 
 var (
 	wf *aw.Workflow
 
-	fs       = flag.NewFlagSet("alfred-services", flag.ExitOnError)
-	flagHelp = fs.Bool("h", false, "show this message and exit")
+	fs         = flag.NewFlagSet("alfred-services", flag.ExitOnError)
+	flagHelp   = fs.Bool("h", false, "show this message and exit")
+	flagUpdate = fs.Bool("update", false, "check for newer version of the workflow")
 )
-
-func init() {
-	aw.IconError = iconError
-	aw.IconWarning = iconWarning
-
-	wf = aw.New()
-
-	fs.SetOutput(os.Stderr)
-}
-
-func usage() {
-	fmt.Fprint(fs.Output(), `alfred-services (-files|-services) [input...]
-
-Alfred workflow to run macOS services
-
-`)
-	fs.PrintDefaults()
-}
-
-func pasteboardTypes() []string {
-	if s := os.Getenv("PBOARD_TYPES"); s != "" {
-		return strings.Split(s, "|")
-	}
-
-	var types []string
-	data, err := util.Run("./PasteboardTypes.js")
-	checkErr(err)
-	checkErr(json.Unmarshal(data, &types))
-
-	wf.Var("PBOARD_TYPES", strings.Join(types, "|"))
-	return types
-}
 
 // Service is a macOS service.
 type Service struct {
@@ -85,6 +61,9 @@ func (s Service) Title() string {
 	return s.Name
 }
 
+// UID returns a unique ID for Service.
+func (s Service) UID() string { return s.AppPath + " - " + s.Name }
+
 // Icon returns a workflow icon for the service.
 func (s Service) Icon() *aw.Icon { return &aw.Icon{Value: s.AppPath, Type: aw.IconTypeFileIcon} }
 
@@ -99,6 +78,14 @@ func (s Service) Supports(types []string) bool {
 	}
 	return false
 }
+
+// ByName sorts services by name.
+type ByName []Service
+
+// Implement sort.Interface
+func (s ByName) Len() int           { return len(s) }
+func (s ByName) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s ByName) Less(i, j int) bool { return s[i].Name < s[j].Name }
 
 // read services from property list.
 func loadServices() ([]Service, error) {
@@ -138,7 +125,55 @@ func loadServices() ([]Service, error) {
 		}
 	}
 
+	sort.Sort(ByName(services))
+
 	return services, nil
+}
+
+// get clipboard data types via environment variable or script
+func pasteboardTypes() []string {
+	if s := os.Getenv("PBOARD_TYPES"); s != "" {
+		return strings.Split(s, "|")
+	}
+
+	var types []string
+	data, err := util.Run("./PasteboardTypes.js")
+	checkErr(err)
+	checkErr(json.Unmarshal(data, &types))
+
+	wf.Var("PBOARD_TYPES", strings.Join(types, "|"))
+	return types
+}
+
+// get contents of clipboard via environment variable or pbpaste
+func clipboardContents() string {
+	if s := os.Getenv("CLIPBOARD"); s != "" {
+		return s
+	}
+
+	data, err := util.RunCmd(exec.Command("/usr/bin/pbpaste", "-Prefer", "txt"))
+	checkErr(err)
+	s := string(data)
+	wf.Var("CLIPBOARD", s)
+	return s
+}
+
+func init() {
+	aw.IconError = iconError
+	aw.IconWarning = iconWarning
+
+	wf = aw.New(update.GitHub(repo), aw.HelpURL(helpURL))
+
+	fs.SetOutput(os.Stderr)
+}
+
+func usage() {
+	fmt.Fprint(fs.Output(), `alfred-services (-files|-services) [input...]
+
+Alfred workflow to run macOS services
+
+`)
+	fs.PrintDefaults()
 }
 
 func run() {
@@ -149,8 +184,16 @@ func run() {
 		return
 	}
 
+	if *flagUpdate {
+		wf.Configure(aw.TextErrors(true))
+		log.Printf("checking for update ...")
+		checkErr(wf.CheckForUpdate())
+		return
+	}
+
 	var (
 		query       = fs.Arg(0)
+		clipboard   string
 		types       []string
 		allServices []Service
 		services    []Service
@@ -159,6 +202,23 @@ func run() {
 
 	log.Printf("query=%q", query)
 
+	// check updates
+	if query == "" && wf.UpdateAvailable() {
+		wf.Configure(aw.SuppressUIDs(true))
+		wf.NewItem("Update Available").
+			Subtitle("⇥ or ↩ to update workflow").
+			Autocomplete("workflow:update").
+			Valid(false).
+			Icon(iconUpdateAvailable)
+	}
+
+	if wf.UpdateCheckDue() {
+		if !wf.IsRunning("update") {
+			checkErr(wf.RunInBackground("update", exec.Command(os.Args[0], "-update")))
+		}
+	}
+
+	// show list of services
 	types = pasteboardTypes()
 	if len(types) == 0 {
 		wf.Warn("No Data on Pasteboard", "")
@@ -184,12 +244,21 @@ func run() {
 		return
 	}
 
+	clipboard = clipboardContents()
+
 	for _, s := range services {
-		wf.NewItem(s.Title()).
+		it := wf.NewItem(s.Title()).
 			Subtitle(s.AppName).
 			Arg(s.Name).
+			UID(s.UID()).
 			Valid(true).
+			Largetype(clipboard).
 			Icon(s.Icon())
+
+		it.NewModifier(aw.ModCmd).
+			Subtitle("Reveal "+s.AppPath).
+			Arg(s.AppPath).
+			Var("reveal", "true")
 	}
 
 	if query != "" {
@@ -205,8 +274,7 @@ func main() {
 }
 
 func checkErr(err error) {
-	if err == nil {
-		return
+	if err != nil {
+		panic(err)
 	}
-	panic(err)
 }

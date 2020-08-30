@@ -45,11 +45,36 @@
 				<false/>
 			</dict>
 		</array>
+		<key>53E8AF64-5368-48AC-92A5-393C41E2FD5F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>D211F7C8-DC82-4BA5-A6AD-487F0631B08C</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>CE3C53CE-A1F5-4EC5-91CD-CD176F3D3735</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>206FE67F-4309-49B3-ADC4-72B0FD32FB61</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>6DAAB434-9A13-4929-87FB-A8480CA81ADF</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>BD18AA3C-3DA9-4BA2-8F8E-3DD4736BDDF0</string>
+				<string>C8A23F37-6F69-4CCD-BB5F-728A092619F0</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -110,11 +135,24 @@
 				<false/>
 			</dict>
 		</array>
+		<key>C8A23F37-6F69-4CCD-BB5F-728A092619F0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>BD18AA3C-3DA9-4BA2-8F8E-3DD4736BDDF0</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>206FE67F-4309-49B3-ADC4-72B0FD32FB61</string>
+				<string>53E8AF64-5368-48AC-92A5-393C41E2FD5F</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -137,40 +175,78 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>focusedappvariable</key>
+				<true/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>44</integer>
+				<key>hotmod</key>
+				<integer>1441792</integer>
+				<key>hotstring</key>
+				<string>/</string>
+				<key>leftcursor</key>
 				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>./alfred-services -files $@</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string>PathsToPasteboard.js</string>
-				<key>type</key>
-				<integer>8</integer>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
-			<string>8489026D-97A0-40DD-AE02-94349B682DBE</string>
+			<string>4A95E744-11F9-4E06-ADE7-226C6470BD04</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>acceptsmulti</key>
-				<true/>
-				<key>filetypes</key>
-				<array/>
-				<key>name</key>
-				<string>macOS Services</string>
+				<key>count</key>
+				<integer>1</integer>
+				<key>keychar</key>
+				<string>c</string>
+				<key>keycode</key>
+				<integer>-1</integer>
+				<key>keymod</key>
+				<integer>1048576</integer>
+				<key>overridewithargument</key>
+				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.trigger.action</string>
+			<string>alfred.workflow.output.dispatchkeycombo</string>
 			<key>uid</key>
-			<string>7DC37085-E798-44A2-B48A-18C2D615567F</string>
+			<string>6DAAB434-9A13-4929-87FB-A8480CA81ADF</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>seconds</key>
+				<string>{var:delay_after_copy}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.delay</string>
+			<key>uid</key>
+			<string>C8A23F37-6F69-4CCD-BB5F-728A092619F0</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>path</key>
+				<string></string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.revealfile</string>
+			<key>uid</key>
+			<string>D211F7C8-DC82-4BA5-A6AD-487F0631B08C</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -229,7 +305,7 @@
 				<key>action</key>
 				<integer>0</integer>
 				<key>argument</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>focusedappvariable</key>
 				<true/>
 				<key>focusedappvariablename</key>
@@ -237,7 +313,7 @@
 				<key>hotkey</key>
 				<integer>44</integer>
 				<key>hotmod</key>
-				<integer>1441792</integer>
+				<integer>1703936</integer>
 				<key>hotstring</key>
 				<string>/</string>
 				<key>leftcursor</key>
@@ -250,52 +326,58 @@
 			<key>type</key>
 			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
-			<string>4A95E744-11F9-4E06-ADE7-226C6470BD04</string>
+			<string>B23AEA1C-49B7-4BD4-B519-E59BC7445EA5</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>/usr/bin/pbcopy &lt;&lt;&lt; "$1"
-echo -n ''</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:reveal}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>1</integer>
+						<key>matchstring</key>
+						<string></string>
+						<key>outputlabel</key>
+						<string>reveal service</string>
+						<key>uid</key>
+						<string>CE3C53CE-A1F5-4EC5-91CD-CD176F3D3735</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>run service</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.utility.conditional</string>
 			<key>uid</key>
-			<string>6DAAB434-9A13-4929-87FB-A8480CA81ADF</string>
+			<string>53E8AF64-5368-48AC-92A5-393C41E2FD5F</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
+				<key>argument</key>
+				<string>.
+/--------- INPUT VARIABLES ---------\
+query={query}
+variables={allvars}
+\--------- INPUT VARIABLES ---------/</string>
+				<key>cleardebuggertext</key>
 				<false/>
-				<key>onlyshowifquerypopulated</key>
+				<key>processoutputs</key>
 				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>💀 Service Error 💀</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
+			<string>alfred.workflow.utility.debug</string>
 			<key>uid</key>
-			<string>D2617139-82A7-4991-B735-173585DE2CAA</string>
+			<string>BD18AA3C-3DA9-4BA2-8F8E-3DD4736BDDF0</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -325,54 +407,23 @@ echo -n ''</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argument</key>
-				<string>.
-/--------- INPUT VARIABLES ---------\
-query={query}
-variables={allvars}
-\--------- INPUT VARIABLES ---------/</string>
-				<key>cleardebuggertext</key>
+				<key>lastpathcomponent</key>
 				<false/>
-				<key>processoutputs</key>
+				<key>onlyshowifquerypopulated</key>
 				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>💀 Service Error 💀</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.debug</string>
+			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
-			<string>BD18AA3C-3DA9-4BA2-8F8E-3DD4736BDDF0</string>
+			<string>D2617139-82A7-4991-B735-173585DE2CAA</string>
 			<key>version</key>
 			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
-				<integer>0</integer>
-				<key>focusedappvariable</key>
-				<true/>
-				<key>focusedappvariablename</key>
-				<string></string>
-				<key>hotkey</key>
-				<integer>44</integer>
-				<key>hotmod</key>
-				<integer>1703936</integer>
-				<key>hotstring</key>
-				<string>/</string>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-				<key>relatedAppsMode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>B23AEA1C-49B7-4BD4-B519-E59BC7445EA5</string>
-			<key>version</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -407,6 +458,46 @@ variables={allvars}
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>./alfred-services -files $@</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>PathsToPasteboard.js</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8489026D-97A0-40DD-AE02-94349B682DBE</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>acceptsmulti</key>
+				<true/>
+				<key>filetypes</key>
+				<array/>
+				<key>name</key>
+				<string>macOS Services</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.action</string>
+			<key>uid</key>
+			<string>7DC37085-E798-44A2-B48A-18C2D615567F</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>macOS Services for Alfred
@@ -436,18 +527,18 @@ Finally, you can assign your own Hotkeys to specific services (though this only 
 
 Assign a Hotkey to a specific service (called on current clipboard contents)</string>
 			<key>xpos</key>
-			<integer>530</integer>
+			<integer>625</integer>
 			<key>ypos</key>
-			<integer>395</integer>
+			<integer>385</integer>
 		</dict>
 		<key>206FE67F-4309-49B3-ADC4-72B0FD32FB61</key>
 		<dict>
 			<key>note</key>
 			<string>Execute service</string>
 			<key>xpos</key>
-			<integer>700</integer>
+			<integer>1000</integer>
 			<key>ypos</key>
-			<integer>205</integer>
+			<integer>280</integer>
 		</dict>
 		<key>4A95E744-11F9-4E06-ADE7-226C6470BD04</key>
 		<dict>
@@ -456,7 +547,14 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>xpos</key>
 			<integer>45</integer>
 			<key>ypos</key>
-			<integer>205</integer>
+			<integer>30</integer>
+		</dict>
+		<key>53E8AF64-5368-48AC-92A5-393C41E2FD5F</key>
+		<dict>
+			<key>xpos</key>
+			<integer>835</integer>
+			<key>ypos</key>
+			<integer>225</integer>
 		</dict>
 		<key>6DAAB434-9A13-4929-87FB-A8480CA81ADF</key>
 		<dict>
@@ -465,7 +563,7 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>xpos</key>
 			<integer>210</integer>
 			<key>ypos</key>
-			<integer>205</integer>
+			<integer>30</integer>
 		</dict>
 		<key>7DC37085-E798-44A2-B48A-18C2D615567F</key>
 		<dict>
@@ -474,7 +572,7 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>xpos</key>
 			<integer>45</integer>
 			<key>ypos</key>
-			<integer>45</integer>
+			<integer>385</integer>
 		</dict>
 		<key>8489026D-97A0-40DD-AE02-94349B682DBE</key>
 		<dict>
@@ -483,7 +581,7 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>xpos</key>
 			<integer>210</integer>
 			<key>ypos</key>
-			<integer>45</integer>
+			<integer>385</integer>
 		</dict>
 		<key>B23AEA1C-49B7-4BD4-B519-E59BC7445EA5</key>
 		<dict>
@@ -492,33 +590,52 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>xpos</key>
 			<integer>45</integer>
 			<key>ypos</key>
-			<integer>380</integer>
+			<integer>205</integer>
 		</dict>
 		<key>BD18AA3C-3DA9-4BA2-8F8E-3DD4736BDDF0</key>
 		<dict>
 			<key>xpos</key>
-			<integer>450</integer>
+			<integer>530</integer>
 			<key>ypos</key>
 			<integer>235</integer>
+		</dict>
+		<key>C8A23F37-6F69-4CCD-BB5F-728A092619F0</key>
+		<dict>
+			<key>xpos</key>
+			<integer>380</integer>
+			<key>ypos</key>
+			<integer>60</integer>
 		</dict>
 		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
 		<dict>
 			<key>note</key>
 			<string>Filter macOS services</string>
 			<key>xpos</key>
-			<integer>530</integer>
+			<integer>625</integer>
 			<key>ypos</key>
 			<integer>205</integer>
+		</dict>
+		<key>D211F7C8-DC82-4BA5-A6AD-487F0631B08C</key>
+		<dict>
+			<key>xpos</key>
+			<integer>1000</integer>
+			<key>ypos</key>
+			<integer>140</integer>
 		</dict>
 		<key>D2617139-82A7-4991-B735-173585DE2CAA</key>
 		<dict>
 			<key>note</key>
 			<string>Show error message</string>
 			<key>xpos</key>
-			<integer>870</integer>
+			<integer>1170</integer>
 			<key>ypos</key>
-			<integer>205</integer>
+			<integer>280</integer>
 		</dict>
+	</dict>
+	<key>variables</key>
+	<dict>
+		<key>delay_after_copy</key>
+		<string>0.3</string>
 	</dict>
 	<key>version</key>
 	<string>0.1.0</string>
