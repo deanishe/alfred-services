@@ -19,7 +19,7 @@ When run via keyword (`services` by default), you can choose from services that 
 
 Alternatively, you can call the workflow via its File Action (called "macOS Services") to run a service with the selected files, or use the second Hotkey to run the workflow on the current macOS selection.
 
-Finally, you can assign your own Hotkeys to specific services (though this only works with the pasteboard contents).
+Finally, you can assign your own Hotkeys to specific services (though this only works with the pasteboard contents). See the red EXAMPLE element in the workflow (which calls the "New TextEdit Window Containing Selection" service).
 
 
 Configuration
