@@ -1,3 +1,8 @@
+
+<div align="center">
+    <img width="128" height="128" src="https://raw.githubusercontent.com/deanishe/alfred-services/master/icons/icon-large.png" alt="grey cog in grey ring" title="workflow icon">
+</div>
+
 macOS Services for Alfred
 =========================
 
