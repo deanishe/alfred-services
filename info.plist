@@ -74,7 +74,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>C8A23F37-6F69-4CCD-BB5F-728A092619F0</string>
+				<string>D2E4E44D-F9CF-41D5-8048-49027A23DF14</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -135,11 +135,11 @@
 				<false/>
 			</dict>
 		</array>
-		<key>C8A23F37-6F69-4CCD-BB5F-728A092619F0</key>
+		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>BD18AA3C-3DA9-4BA2-8F8E-3DD4736BDDF0</string>
+				<string>53E8AF64-5368-48AC-92A5-393C41E2FD5F</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -148,11 +148,23 @@
 				<false/>
 			</dict>
 		</array>
-		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
+		<key>D2E4E44D-F9CF-41D5-8048-49027A23DF14</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>53E8AF64-5368-48AC-92A5-393C41E2FD5F</string>
+				<string>6920921E-E46C-46D4-8115-DB670DB13467</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>0E0BF794-D94E-4DF2-A33B-26D5A934ACAF</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>BD18AA3C-3DA9-4BA2-8F8E-3DD4736BDDF0</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -172,6 +184,27 @@
 	<string>macOS Services</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>Couldn't get current selection from active application</string>
+				<key>title</key>
+				<string>Nothing Selected</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>6920921E-E46C-46D4-8115-DB670DB13467</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -206,34 +239,53 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>count</key>
-				<integer>1</integer>
-				<key>keychar</key>
-				<string>c</string>
-				<key>keycode</key>
-				<integer>-1</integer>
-				<key>keymod</key>
-				<integer>1048576</integer>
-				<key>overridewithargument</key>
+				<key>concurrently</key>
 				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>WaitForPasteboard.js</string>
+				<key>type</key>
+				<integer>8</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.dispatchkeycombo</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>6DAAB434-9A13-4929-87FB-A8480CA81ADF</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>seconds</key>
-				<string>{var:delay_after_copy}</string>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:copy_failed}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>1</integer>
+						<key>matchstring</key>
+						<string></string>
+						<key>outputlabel</key>
+						<string>Copy Failed</string>
+						<key>uid</key>
+						<string>0E0BF794-D94E-4DF2-A33B-26D5A934ACAF</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>else</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.delay</string>
+			<string>alfred.workflow.utility.conditional</string>
 			<key>uid</key>
-			<string>C8A23F37-6F69-4CCD-BB5F-728A092619F0</string>
+			<string>D2E4E44D-F9CF-41D5-8048-49027A23DF14</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -485,7 +537,7 @@ variables={allvars}
 			<key>config</key>
 			<dict>
 				<key>acceptsmulti</key>
-				<true/>
+				<integer>1</integer>
 				<key>filetypes</key>
 				<array/>
 				<key>name</key>
@@ -556,10 +608,17 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>ypos</key>
 			<integer>225</integer>
 		</dict>
+		<key>6920921E-E46C-46D4-8115-DB670DB13467</key>
+		<dict>
+			<key>xpos</key>
+			<integer>625</integer>
+			<key>ypos</key>
+			<integer>15</integer>
+		</dict>
 		<key>6DAAB434-9A13-4929-87FB-A8480CA81ADF</key>
 		<dict>
 			<key>note</key>
-			<string>Put input on clipboard and clear {query}</string>
+			<string>Simulate ⌘C to get current selection and wait for clipboard to populate</string>
 			<key>xpos</key>
 			<integer>210</integer>
 			<key>ypos</key>
@@ -599,13 +658,6 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>ypos</key>
 			<integer>235</integer>
 		</dict>
-		<key>C8A23F37-6F69-4CCD-BB5F-728A092619F0</key>
-		<dict>
-			<key>xpos</key>
-			<integer>380</integer>
-			<key>ypos</key>
-			<integer>60</integer>
-		</dict>
 		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
 		<dict>
 			<key>note</key>
@@ -631,14 +683,16 @@ Assign a Hotkey to a specific service (called on current clipboard contents)</st
 			<key>ypos</key>
 			<integer>280</integer>
 		</dict>
-	</dict>
-	<key>variables</key>
-	<dict>
-		<key>delay_after_copy</key>
-		<string>0.3</string>
+		<key>D2E4E44D-F9CF-41D5-8048-49027A23DF14</key>
+		<dict>
+			<key>xpos</key>
+			<integer>365</integer>
+			<key>ypos</key>
+			<integer>50</integer>
+		</dict>
 	</dict>
 	<key>version</key>
-	<string>0.1.0</string>
+	<string>0.2.0</string>
 	<key>webaddress</key>
 	<string></string>
 </dict>

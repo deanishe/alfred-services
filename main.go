@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -28,6 +29,8 @@ const (
 	helpURL = "https://github.com/deanishe/alfred-services/issues"
 	// property list containing list of services
 	servicesList = "${HOME}/Library/Caches/com.apple.nsservicescache.plist"
+	// properly list containing enabled information
+	pbsList = "${HOME}/Library/Preferences/pbs.plist"
 )
 
 var (
@@ -46,10 +49,11 @@ var (
 
 // Service is a macOS service.
 type Service struct {
-	Name    string   // name of service
-	Types   []string // supported pasteboard types
-	AppName string   // name of app service belongs to (optional)
-	AppPath string   // path of application that defines service
+	Name     string   // name of service
+	Types    []string // supported pasteboard types
+	AppName  string   // name of app service belongs to (optional)
+	AppPath  string   // path of application that defines service
+	Disabled bool     // whether service is disabled
 }
 
 // Title returns a more readable name.
@@ -87,17 +91,51 @@ func (s ByName) Len() int           { return len(s) }
 func (s ByName) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
 func (s ByName) Less(i, j int) bool { return s[i].Name < s[j].Name }
 
+var rxServiceName = regexp.MustCompile(`^(\S+) - (.+) - (\S+)$`)
+
 // read services from property list.
 func loadServices() ([]Service, error) {
-	var services []Service
+	var (
+		disabled = map[string]bool{}
+		services []Service
+		path     string
+		data     []byte
+		err      error
+	)
+	// extract enabled/disabled info from pbs.plist
+	path = os.ExpandEnv(pbsList)
+	if data, err = ioutil.ReadFile(path); err != nil {
+		return nil, errors.Wrap(err, "read pbs.plist")
+	}
+	v1 := struct {
+		Services map[string]struct {
+			Modes struct {
+				ContextMenu  bool `plist:"ContextMenu"`
+				ServicesMenu bool `plist:"ServicesMenu"`
+				TouchBar     bool `plist:"TouchBar"`
+			} `plist:"presentation_modes"`
+		} `plist:"NSServicesStatus"`
+	}{}
+	if _, err = plist.Unmarshal(data, &v1); err != nil {
+		return nil, errors.Wrap(err, "unmarshal pbs list")
+	}
+	for key, modes := range v1.Services {
+		m := rxServiceName.FindStringSubmatch(key)
+		if m == nil {
+			log.Printf("[WARNING] could not parse pbs service name: %s", key)
+			continue
+		}
+		if !modes.Modes.ContextMenu && !modes.Modes.ServicesMenu && !modes.Modes.TouchBar {
+			disabled[m[2]] = true
+		}
+	}
 
-	path := os.ExpandEnv(servicesList)
-
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
+	// extract main services metadata
+	path = os.ExpandEnv(servicesList)
+	if data, err = ioutil.ReadFile(path); err != nil {
 		return nil, errors.Wrap(err, "read services list")
 	}
-	v := struct {
+	v2 := struct {
 		Apps map[string]struct {
 			BundleID string `plist:"bundle_id"`
 			Name     string `plist:"name"`
@@ -110,17 +148,18 @@ func loadServices() ([]Service, error) {
 		} `plist:"ServicesCache"`
 	}{}
 
-	if _, err := plist.Unmarshal(data, &v); err != nil {
+	if _, err = plist.Unmarshal(data, &v2); err != nil {
 		return nil, errors.Wrap(err, "unmarshal services list")
 	}
 
-	for path, app := range v.Apps {
+	for path, app := range v2.Apps {
 		for _, v := range app.Services {
 			services = append(services, Service{
-				Name:    v.Menu.Name,
-				Types:   v.Types,
-				AppName: app.Name,
-				AppPath: path,
+				Name:     v.Menu.Name,
+				Types:    v.Types,
+				AppName:  app.Name,
+				AppPath:  path,
+				Disabled: disabled[v.Menu.Name],
 			})
 		}
 	}
@@ -234,11 +273,11 @@ func run() {
 	log.Printf("%d total service(s)", len(allServices))
 
 	for _, s := range allServices {
-		if s.Supports(types) {
+		if !s.Disabled && s.Supports(types) {
 			services = append(services, s)
 		}
 	}
-	log.Printf("%d service(s) support current pasteboard types", len(services))
+	log.Printf("%d enabled service(s) support current pasteboard types", len(services))
 	if len(services) == 0 {
 		wf.Warn("No Matching Services", "No services support the current data")
 		return

@@ -27,12 +27,6 @@ Alternatively, you can call the workflow via its File Action (called "macOS Serv
 Finally, you can assign your own Hotkeys to specific services (though this only works with the pasteboard contents). See the red EXAMPLE element in the workflow (which calls the "New TextEdit Window Containing Selection" service).
 
 
-Configuration
--------------
-
-There is one variable in the workflow configuration sheet: `delay_after_copy`. When using the Hotkey to use the current macOS selection, the workflow simulates a `⌘C` keypress to put the selection on the clipboard (where it can read it). `delay_after_copy` specifies how long (in seconds) the workflow should wait for the clipboard to populate after the simulated keypress. The default delay is 0.3s. Increase this if you find the workflow is being run with the previous clipboard contents.
-
-
 Licensing & thanks
 ------------------
 

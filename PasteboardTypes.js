@@ -14,15 +14,13 @@ const pboard = $.NSPasteboard.generalPasteboard
 
 function pboardTypes() {
 	let types = []
-	ObjC.unwrap(pboard.pasteboardItems).forEach(it => {
-		ObjC.unwrap(it.types).forEach(t => {
-			let s = ObjC.unwrap(t)
-			if (!types.includes(s)) {
-				types.push(s)
-				console.log(`[pboard] type=${s}`)
-			}
-		})
+	ObjC.unwrap(pboard.types).forEach(t => {
+		let s = ObjC.unwrap(t)
+		if (s.startsWith('dyn.')) return
+		console.log(`[pboard] type=${s}`)
+		types.push(s)
 	})
+
 	return types
 }
 
